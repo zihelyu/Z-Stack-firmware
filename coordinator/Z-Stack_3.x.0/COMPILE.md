@@ -25,3 +25,53 @@
     - `znp_LP_CC1352P7_4_tirtos7_ticlang.hex` -> CC1352P7 based boards
     - `znp_LP_CC2652R7_tirtos7_ticlang.hex` -> CC2652R7 based boards
     - `znp_LP_CC2652RB_tirtos7_ticlang.hex` -> CC2652RB based boards
+
+## Docker build environment
+This repo includes a Container file, to help with setting up a build environment without the need to download and install things manually. [Docker](https://docker.com) or [Podman](https://podman.io) can be used. The following example uses docker.
+
+1. This step builds the container locally. This step may be skipped if using a [released container](https://github.com/Koenkk/pkgs/container/Z-Stack-firmware) from this repository instead.
+```console
+$ docker build \
+    --file 'Containerfile' \
+    --rm \
+    --tag 'z-stack:dev' \
+    'https://github.com/Koenkk/Z-Stack-firmware.git#master'
+```
+
+> __Note:__ The URL in the example can be replace with a '.' when the repository has been cloned locally and having `cd`ed into the repository directory.
+
+> __:Warning:__ The build of the container will download the SDK and CCS. While docker keeps a cached copy on subsequent builds, this download can take a while and is not immediately obvious it is happening.
+
+1. Enter the container so that the firmware can be built.
+```console
+$ docker run \
+    --interactive \
+    --rm \
+    --tty \
+    --volume './:/src' \
+    --volume './workspace:/build/workspace' \
+    --workdir '/build/workspace' \
+    'z-stack:dev' \
+    '/bin/bash'
+```
+
+> *TIP:* This document assumes that docker is pulling the container directly from git and an unpatched build environment is setup. Patching of the SDK sources and workspace still is needed. A volume `/src` is mounted in the container where patches are expected to be located.
+
+> __Note:__ The local directory `./workspace` is volume-mounted into the containers `/build/workspace` directory to be able to keep files from the container, but can be freely removed when done.
+
+Within the container, we now follow the same steps as above. The GUI is still needed and instructions below explain how this can be achieved.
+
+### Launching eclipse in the container
+To launch eclipse in the container to test/check things out. This does require a X11 compatible host.
+ ```
+--env DISPLAY="${DISPLAY}" --volume '/tmp/.X11-unix' --network='host'
+```
+> __Note:__ The network mapping is required for local X11 forwarding to work due to the `DISPLAY` variable assuming `localhost`.
+
+Within the container, eclipse does require `libswt-gtk-4-java epiphany-browser` installed (ccs/eclipse does come with chromium, but epiphany is an easy way to fulfill its missing dependencies).
+
+Almost certainly some additional security mechanisms need to be bypassed, where a quick (and dangerous) hack is to `xhost +` on the host before launching the container.
+
+Finally start `eclipse -data '/build/workspace'` from within the container and it will then pop up a UI window on the host.
+
+> __Note:__ Optionally, a VNC in docker solution or X11 forwarding over ssh can also be used, but that is out of scope for here.
