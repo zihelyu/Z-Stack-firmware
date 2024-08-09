@@ -3,7 +3,7 @@
 ## Setup development environment
 
 1. Download and install [SIMPLELINK-LOWPOWER-F2-SDK 7.41.00.17](https://www.ti.com/tool/download/SIMPLELINK-LOWPOWER-F2-SDK/7.41.00.17)
-1. Download and install [Code Composer Studio 12.6.0](https://www.ti.com/tool/download/CCSTUDIO/12.6.0)
+1. Download and install [Code Composer Studio 12.8.0](https://www.ti.com/tool/download/CCSTUDIO/12.8.0)
 
 ## Compiling
 
