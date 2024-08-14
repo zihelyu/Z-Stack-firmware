@@ -1,7 +1,7 @@
 From 97c07dc8784640c277348d409f7d05e70000b6d9 Mon Sep 17 00:00:00 2001
 From: Olliver Schinagl <oliver@schinagl.nl>
 Date: Wed, 14 Aug 2024 10:30:34 +0200
-Subject: [PATCH 06/15] sdk: Capture and forward all messages
+Subject: [PATCH 06/18] sdk: Capture and forward all messages
 
 When no endpoint found, default to endpoint 1. In the original source code
 there is a return here. This prevent the messages from being forwarded. For

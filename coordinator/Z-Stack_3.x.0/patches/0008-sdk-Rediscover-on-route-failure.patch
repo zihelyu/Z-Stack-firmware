@@ -1,7 +1,7 @@
 From 704b86abf3cec819504acdba4cd581d7c4636d14 Mon Sep 17 00:00:00 2001
 From: Olliver Schinagl <oliver@schinagl.nl>
 Date: Wed, 14 Aug 2024 10:39:42 +0200
-Subject: [PATCH 08/15] sdk: Rediscover on route failure
+Subject: [PATCH 08/18] sdk: Rediscover on route failure
 
 Received a source route failure, remove route and rediscover.
 

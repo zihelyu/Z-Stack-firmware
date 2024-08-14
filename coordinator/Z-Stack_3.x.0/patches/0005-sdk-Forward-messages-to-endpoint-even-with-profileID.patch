@@ -1,7 +1,7 @@
 From 8b7854e9311d5aea8f5b14bb896a97cb5363871e Mon Sep 17 00:00:00 2001
 From: Olliver Schinagl <oliver@schinagl.nl>
 Date: Wed, 14 Aug 2024 10:29:47 +0200
-Subject: [PATCH 05/15] sdk: Forward messages to endpoint even with profileID
+Subject: [PATCH 05/18] sdk: Forward messages to endpoint even with profileID
  mismatches
 
 @koenkk

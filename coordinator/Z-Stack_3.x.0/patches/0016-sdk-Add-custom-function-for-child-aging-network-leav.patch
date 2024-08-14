@@ -1,0 +1,100 @@
+From 485eaf92c38505abb1e9e520625724a854a89648 Mon Sep 17 00:00:00 2001
+From: Olliver Schinagl <oliver@schinagl.nl>
+Date: Tue, 13 Aug 2024 16:08:30 +0200
+Subject: [PATCH 16/18] sdk: Add custom function for child aging network
+ leaving
+
+Some devices do not support child aging, and thus need to be excepted
+from child aging network kick.
+
+This patch is extracted from Koenkk's firmware patch.
+
+While here, it fixes a typo (chidl -> child), some whitespace fixes, and
+ensures we include the headers we actually use.
+
+No code changes where performed with this patch.
+
+Signed-off-by: Olliver Schinagl <oliver@schinagl.nl>
+---
+ source/ti/zstack/stack/nwk/nwk_util.c | 53 +++++++++++++++++++++++++++
+ source/ti/zstack/stack/nwk/nwk_util.h |  4 ++
+ 2 files changed, 57 insertions(+)
+ create mode 100644 source/ti/zstack/stack/nwk/nwk_util.c
+
+diff --git a/source/ti/zstack/stack/nwk/nwk_util.c b/source/ti/zstack/stack/nwk/nwk_util.c
+new file mode 100644
+index 000000000..ec614f181
+--- /dev/null
++++ b/source/ti/zstack/stack/nwk/nwk_util.c
+@@ -0,0 +1,53 @@
++#include <stdint.h>
++#include <string.h>
++
++#include "aps_mede.h"
++#include "nwk_util.h"
++#include "zcomdef.h"
++
++#ifndef NWK_MAX_CHILD_AGING_LEAVE_DISABLED_ENTRIES
++#define NWK_MAX_CHILD_AGING_LEAVE_DISABLED_ENTRIES 50
++#endif
++
++typedef struct
++{
++    uint8_t extAddr[Z_EXTADDR_LEN];
++    uint8_t numBytesToMatch;
++} child_aging_leave_disabled_entry_t;
++
++child_aging_leave_disabled_entry_t childAgingLeaveDisabledList[NWK_MAX_CHILD_AGING_LEAVE_DISABLED_ENTRIES];
++uint8_t childAgingLeaveDisabledCnt = 0;
++
++uint8_t NwkDisableChildAgingLeaveAdd(uint8_t* extAddr, uint8_t numBytesToMatch)
++{
++    if (childAgingLeaveDisabledCnt == NWK_MAX_CHILD_AGING_LEAVE_DISABLED_ENTRIES) {
++        return 1;
++    }
++
++    memcpy(childAgingLeaveDisabledList[childAgingLeaveDisabledCnt].extAddr, extAddr, Z_EXTADDR_LEN);
++    childAgingLeaveDisabledList[childAgingLeaveDisabledCnt].numBytesToMatch = numBytesToMatch;
++    ++childAgingLeaveDisabledCnt;
++
++    return 0;
++}
++
++void NwkNotMyChildSendLeaveCustom(uint16_t dstAddr)
++{
++    uint8_t extAddr[Z_EXTADDR_LEN];
++    uint8_t idx;
++
++    if (!APSME_LookupExtAddr(dstAddr, extAddr)) {
++        return;
++    }
++
++    // Do not send leave request to devices where it is disabled for
++    for (idx = 0; idx < childAgingLeaveDisabledCnt; ++idx)
++    {
++        uint8_t offset = Z_EXTADDR_LEN - childAgingLeaveDisabledList[idx].numBytesToMatch;
++        if (memcmp(childAgingLeaveDisabledList[idx].extAddr + offset, extAddr + offset, childAgingLeaveDisabledList[idx].numBytesToMatch) == 0) {
++            return;
++        }
++    }
++
++    NwkNotMyChildSendLeave (dstAddr);
++};
+diff --git a/source/ti/zstack/stack/nwk/nwk_util.h b/source/ti/zstack/stack/nwk/nwk_util.h
+index 468227b32..3477de320 100644
+--- a/source/ti/zstack/stack/nwk/nwk_util.h
++++ b/source/ti/zstack/stack/nwk/nwk_util.h
+@@ -638,6 +638,10 @@ extern uint8_t (*pNwkNotMyChildListAdd)( uint16_t devAddr, uint32_t timeoutValue
+ extern void (*pNwkNotMyChildListDelete)( uint16_t devAddr );
+ extern void (*pNwkNotMyChildSendLeave)( uint16_t dstAddr );
+ 
++// Custom functions
++uint8_t NwkDisableChildAgingLeaveAdd(uint8_t* extAddr, uint8_t numBytesToMatch);
++void NwkNotMyChildSendLeaveCustom(uint16_t dstAddr);
++
+ /****************************************************************************
+  * Utility function to copy NV items
+  ****************************************************************************/
+-- 
+2.46.0
+

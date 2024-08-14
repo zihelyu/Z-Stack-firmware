@@ -1,7 +1,7 @@
 From db40bd6689257a18743034f2933c7d47931feac8 Mon Sep 17 00:00:00 2001
 From: Olliver Schinagl <oliver@schinagl.nl>
 Date: Wed, 14 Aug 2024 11:23:05 +0200
-Subject: [PATCH 13/15] sdk: Increase flash size
+Subject: [PATCH 13/18] sdk: Increase flash size
 
 To be able to fit larger firmware images, we have a little headroom on
 our flash size. Lets increase it to make the maximum space available.
