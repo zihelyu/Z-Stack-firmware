@@ -1,7 +1,7 @@
 From 535f54270390d798357dde7967a1e517fd24dea1 Mon Sep 17 00:00:00 2001
 From: Olliver Schinagl <oliver@schinagl.nl>
 Date: Wed, 14 Aug 2024 11:21:09 +0200
-Subject: [PATCH 12/18] sdk: Increase databuffer sizes
+Subject: [PATCH 12/20] sdk: Increase databuffer sizes
 
 Increase data buffer sizes so we can increase our performance/network
 size.

@@ -1,7 +1,7 @@
 From 485eaf92c38505abb1e9e520625724a854a89648 Mon Sep 17 00:00:00 2001
 From: Olliver Schinagl <oliver@schinagl.nl>
 Date: Tue, 13 Aug 2024 16:08:30 +0200
-Subject: [PATCH 16/18] sdk: Add custom function for child aging network
+Subject: [PATCH 16/20] sdk: Add custom function for child aging network
  leaving
 
 Some devices do not support child aging, and thus need to be excepted

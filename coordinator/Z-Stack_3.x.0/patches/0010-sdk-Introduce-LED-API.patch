@@ -1,7 +1,7 @@
 From 6642526060a96b5e95dc43eea5efac181a179e68 Mon Sep 17 00:00:00 2001
 From: Olliver Schinagl <oliver@schinagl.nl>
 Date: Wed, 14 Aug 2024 11:07:29 +0200
-Subject: [PATCH 10/18] sdk: Introduce LED API
+Subject: [PATCH 10/20] sdk: Introduce LED API
 
 Allow the LED to be turned on/off via the API with a new command,
 MT_UTIL_LED_CONTROL (0x0A).

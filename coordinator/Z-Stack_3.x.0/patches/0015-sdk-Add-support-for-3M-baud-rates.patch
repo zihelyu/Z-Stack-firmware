@@ -1,7 +1,7 @@
 From 0d7ba4671258f0036793fb77f9502f2bee0109e0 Mon Sep 17 00:00:00 2001
 From: Olliver Schinagl <oliver@schinagl.nl>
 Date: Sat, 17 Aug 2024 17:05:31 +0200
-Subject: [PATCH 15/18] sdk: Add support for 3M baud rates
+Subject: [PATCH 15/20] sdk: Add support for 3M baud rates
 
 The CC2652P amongst others, happily and flexibly supports multiple baud
 rates up to 3M. The CN2102, often used, also goes upto 3M without
