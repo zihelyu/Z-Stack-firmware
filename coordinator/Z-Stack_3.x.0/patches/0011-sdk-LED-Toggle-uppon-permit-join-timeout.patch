@@ -1,7 +1,7 @@
 From 1eb105c23f021f6464cead7e606ce114bc6108eb Mon Sep 17 00:00:00 2001
 From: Olliver Schinagl <oliver@schinagl.nl>
 Date: Wed, 14 Aug 2024 11:15:15 +0200
-Subject: [PATCH 11/14] sdk: LED Toggle uppon permit join/timeout
+Subject: [PATCH 11/17] sdk: LED Toggle uppon permit join/timeout
 
 When a network is joined, we toggle the led ON or OFF, depending on the
 previous state. This makes it visual whether the Zigbee radio allows

@@ -1,7 +1,7 @@
 From 155da8f37adfb44874e720ffd52f9437e557b18f Mon Sep 17 00:00:00 2001
 From: Olliver Schinagl <oliver@schinagl.nl>
 Date: Wed, 14 Aug 2024 10:19:32 +0200
-Subject: [PATCH 02/14] sdk: packDev_t: Clear out uninitialized memory garbage
+Subject: [PATCH 02/17] sdk: packDev_t: Clear out uninitialized memory garbage
 
 If pDev is NULL (i.e. not found in associated devices list), only the first
 2 bytes of the buffer (shortAddr) were filled (with INVALID_NODE_ADDR).

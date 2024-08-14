@@ -1,7 +1,7 @@
 From 929884dfce37e6bc5cf0f3a26d7fd9c73bd5c5a1 Mon Sep 17 00:00:00 2001
 From: Olliver Schinagl <oliver@schinagl.nl>
 Date: Wed, 14 Aug 2024 10:20:42 +0200
-Subject: [PATCH 03/14] sdk: packDev_t: Properly and entirely fill entire
+Subject: [PATCH 03/17] sdk: packDev_t: Properly and entirely fill entire
  struct
 
 The values from associated_devices_t struct after linkInfo.txFailure were

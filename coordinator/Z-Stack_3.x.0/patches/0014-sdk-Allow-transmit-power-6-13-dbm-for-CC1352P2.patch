@@ -1,7 +1,7 @@
 From 7fe32d42619e8503b4271e2393548f9ad4a25e40 Mon Sep 17 00:00:00 2001
 From: Olliver Schinagl <oliver@schinagl.nl>
 Date: Fri, 16 Aug 2024 10:16:17 +0200
-Subject: [PATCH 14/14] sdk: Allow transmit power 6 - 13 dbm for CC1352P2
+Subject: [PATCH 14/17] sdk: Allow transmit power 6 - 13 dbm for CC1352P2
 
 Lets extend the range of the CC1352P2 so also include 6 - 13 dBm  signal
 strengths.

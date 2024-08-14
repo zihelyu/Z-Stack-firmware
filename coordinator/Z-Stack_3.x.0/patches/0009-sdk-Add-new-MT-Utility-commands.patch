@@ -1,7 +1,7 @@
 From 43fc518d2febfed4df5f5375a4b4c4cfc41acac2 Mon Sep 17 00:00:00 2001
 From: Olliver Schinagl <oliver@schinagl.nl>
 Date: Wed, 14 Aug 2024 10:48:53 +0200
-Subject: [PATCH 09/14] sdk: Add new MT Utility commands
+Subject: [PATCH 09/17] sdk: Add new MT Utility commands
 
 Add two new custom commands, MT_UTIL_ASSOC_REMOVE (0x63) and
 MT_UTIL_ASSOC_ADD (0x64) to allow for adding and removing associations
