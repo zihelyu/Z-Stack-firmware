@@ -8,7 +8,7 @@ Subject: [PATCH 1/1] Own changes
  .../cc13x2x7_cc26x2x7_tirtos7_ticlang.cmd     |   8 +-
  source/ti/zstack/mt/mt.h                      |   4 +
  source/ti/zstack/mt/mt_util.c                 | 119 +++++-
- source/ti/zstack/mt/mt_version.c              |   8 +-
+ source/ti/zstack/mt/mt_version.c              |  10 +-
  source/ti/zstack/mt/mt_zdo.c                  |   5 +
  source/ti/zstack/stack/Config/preinclude.h    | 159 ++++++++
  source/ti/zstack/stack/af/af.c                |  18 +-
@@ -40,7 +40,7 @@ Subject: [PATCH 1/1] Own changes
  .../znp_LP_CC2652RB_tirtos7_ticlang/.project  |  10 +
  .../Stack/Config/znp_cnf.opts                 |   2 +
  .../znp.syscfg                                |   6 +-
- 36 files changed, 1363 insertions(+), 29 deletions(-)
+ 36 files changed, 1365 insertions(+), 29 deletions(-)
  create mode 100644 source/ti/zstack/stack/Config/preinclude.h
  create mode 100644 source/ti/zstack/stack/nwk/nwk_util.c
  create mode 100644 workspace/znp_CC1352P_2_LAUNCHXL_tirtos7_ticlang/ti_devices_config.c
@@ -295,11 +295,13 @@ diff --git a/source/ti/zstack/mt/mt_version.c b/source/ti/zstack/mt/mt_version.c
 index 6a9b760d..0fa8f7c0 100644
 --- a/source/ti/zstack/mt/mt_version.c
 +++ b/source/ti/zstack/mt/mt_version.c
-@@ -69,15 +69,21 @@
+@@ -69,15 +69,23 @@
  #include "zcomdef.h"
  #include "mt_version.h"
  
++#ifndef CODE_REVISION_NUMBER
 +#define CODE_REVISION_NUMBER 20230507
++#endif
 +
  /******************************************************************************
   * CONSTANTS
