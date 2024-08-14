@@ -1,0 +1,304 @@
+From dfc6c76996a79f0b524dadc9d20ef7cec037b6dc Mon Sep 17 00:00:00 2001
+From: Olliver Schinagl <oliver@schinagl.nl>
+Date: Fri, 16 Aug 2024 10:16:17 +0200
+Subject: [PATCH 14/15] sdk: Allow transmit power 6 - 13 dbm for CC1352P2
+
+Lets extend the range of the CC1352P2 so also include 6 - 13 dBm  signal
+strengths.
+
+@koenkk
+
+Signed-off-by: Olliver Schinagl <oliver@schinagl.nl>
+---
+ .../cc13x2_cc26x2_r3/pasettings.json          | 240 ++++++++++++++++++
+ 1 file changed, 240 insertions(+)
+
+diff --git a/source/ti/devices/radioconfig/.meta/config/pa_tables/cc13x2_cc26x2_r3/pasettings.json b/source/ti/devices/radioconfig/.meta/config/pa_tables/cc13x2_cc26x2_r3/pasettings.json
+index 929ddfdfc..c2e7b2285 100644
+--- a/source/ti/devices/radioconfig/.meta/config/pa_tables/cc13x2_cc26x2_r3/pasettings.json
++++ b/source/ti/devices/radioconfig/.meta/config/pa_tables/cc13x2_cc26x2_r3/pasettings.json
+@@ -2086,6 +2086,46 @@
+                                 "_text": "14",
+                                 "Value": "0xFFFF",
+                                 "TxHighPa": "0x1B27D6"
++                            },
++                            {
++                                "_text": "13",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x3FC3CD"
++                            },
++                            {
++                                "_text": "12",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x3F27CC"
++                            },
++                            {
++                                "_text": "11",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x3021CB"
++                            },
++                            {
++                                "_text": "10",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x104F66"
++                            },
++                            {
++                                "_text": "9",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x103F5F"
++                            },
++                            {
++                                "_text": "8",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x10335A"
++                            },
++                            {
++                                "_text": "7",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x14285F"
++                            },
++                            {
++                                "_text": "6",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x144F2A"
+                             }
+                         ]
+                     }
+@@ -2133,6 +2173,46 @@
+                                     "_text": "14",
+                                     "Value": "0xFFFF",
+                                     "TxHighPa": "0x00380D"
++				},
++				{
++				    "_text": "13",
++				    "Value": "0xFFFF",
++				    "TxHighPa": "0x3FC3CD"
++				},
++				{
++				    "_text": "12",
++				    "Value": "0xFFFF",
++				    "TxHighPa": "0x3F27CC"
++				},
++				{
++				    "_text": "11",
++				    "Value": "0xFFFF",
++				    "TxHighPa": "0x3021CB"
++				},
++				{
++				    "_text": "10",
++				    "Value": "0xFFFF",
++				    "TxHighPa": "0x104F66"
++				},
++				{
++				    "_text": "9",
++				    "Value": "0xFFFF",
++				    "TxHighPa": "0x103F5F"
++				},
++				{
++				    "_text": "8",
++				    "Value": "0xFFFF",
++				    "TxHighPa": "0x10335A"
++				},
++				{
++				    "_text": "7",
++				    "Value": "0xFFFF",
++				    "TxHighPa": "0x14285F"
++				},
++				{
++				    "_text": "6",
++				    "Value": "0xFFFF",
++				    "TxHighPa": "0x144F2A"
+                                 }
+                             ]
+                         }
+@@ -2176,6 +2256,46 @@
+                                     "_text": "14",
+                                     "Value": "0xFFFF",
+                                     "TxHighPa": "0x1B27D6"
++                                },
++                                {
++                                    "_text": "13",
++                                    "Value": "0xFFFF",
++                                    "TxHighPa": "0x3FC3CD"
++                                },
++                                {
++                                    "_text": "12",
++                                    "Value": "0xFFFF",
++                                    "TxHighPa": "0x3F27CC"
++                                },
++                                {
++                                    "_text": "11",
++                                    "Value": "0xFFFF",
++                                    "TxHighPa": "0x3021CB"
++                                },
++                                {
++                                    "_text": "10",
++                                    "Value": "0xFFFF",
++                                    "TxHighPa": "0x104F66"
++                                },
++                                {
++                                    "_text": "9",
++                                    "Value": "0xFFFF",
++                                    "TxHighPa": "0x103F5F"
++                                },
++                                {
++                                    "_text": "8",
++                                    "Value": "0xFFFF",
++                                    "TxHighPa": "0x10335A"
++                                },
++                                {
++                                    "_text": "7",
++                                    "Value": "0xFFFF",
++                                    "TxHighPa": "0x14285F"
++                                },
++                                {
++                                    "_text": "6",
++                                    "Value": "0xFFFF",
++                                    "TxHighPa": "0x144F2A"
+                                 }
+                             ]
+                         }
+@@ -2305,6 +2425,46 @@
+                                 "_text": "14",
+                                 "Value": "0xFFFF",
+                                 "TxHighPa": "0x1B27D6"
++                            },
++                            {
++                                "_text": "13",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x3FC3CD"
++                            },
++                            {
++                                "_text": "12",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x3F27CC"
++                            },
++                            {
++                                "_text": "11",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x3021CB"
++                            },
++                            {
++                                "_text": "10",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x104F66"
++                            },
++                            {
++                                "_text": "9",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x103F5F"
++                            },
++                            {
++                                "_text": "8",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x10335A"
++                            },
++                            {
++                                "_text": "7",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x14285F"
++                            },
++                            {
++                                "_text": "6",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x144F2A"
+                             }
+                         ]
+                     }
+@@ -2351,6 +2511,46 @@
+                                 "_text": "14",
+                                 "Value": "0xFFFF",
+                                 "TxHighPa": "0x1B27D6"
++                            },
++                            {
++                                "_text": "13",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x3FC3CD"
++                            },
++                            {
++                                "_text": "12",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x3F27CC"
++                            },
++                            {
++                                "_text": "11",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x3021CB"
++                            },
++                            {
++                                "_text": "10",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x104F66"
++                            },
++                            {
++                                "_text": "9",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x103F5F"
++                            },
++                            {
++                                "_text": "8",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x10335A"
++                            },
++                            {
++                                "_text": "7",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x14285F"
++                            },
++                            {
++                                "_text": "6",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x144F2A"
+                             }
+                         ]
+                     }
+@@ -2397,6 +2597,46 @@
+                                 "_text": "14",
+                                 "Value": "0xFFFF",
+                                 "TxHighPa": "0x1B27D6"
++                            },
++                            {
++                                "_text": "13",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x3FC3CD"
++                            },
++                            {
++                                "_text": "12",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x3F27CC"
++                            },
++                            {
++                                "_text": "11",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x3021CB"
++                            },
++                            {
++                                "_text": "10",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x104F66"
++                            },
++                            {
++                                "_text": "9",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x103F5F"
++                            },
++                            {
++                                "_text": "8",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x10335A"
++                            },
++                            {
++                                "_text": "7",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x14285F"
++                            },
++                            {
++                                "_text": "6",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x144F2A"
+                             }
+                         ]
+                     }
+-- 
+2.46.0
+

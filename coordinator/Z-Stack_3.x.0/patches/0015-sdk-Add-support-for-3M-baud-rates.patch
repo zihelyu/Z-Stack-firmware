@@ -1,0 +1,95 @@
+From 0d7ba4671258f0036793fb77f9502f2bee0109e0 Mon Sep 17 00:00:00 2001
+From: Olliver Schinagl <oliver@schinagl.nl>
+Date: Sat, 17 Aug 2024 17:05:31 +0200
+Subject: [PATCH 15/15] sdk: Add support for 3M baud rates
+
+The CC2652P amongst others, happily and flexibly supports multiple baud
+rates up to 3M. The CN2102, often used, also goes upto 3M without
+propblem. Lets use the supported rates from th CN2102 datasheet which
+gives us a nice set.
+
+Note that this is just a UI limitation.
+
+Signed-off-by: Olliver Schinagl <oliver@schinagl.nl>
+---
+ source/ti/display/.meta/Display.syscfg.js | 26 +++++++++++++----------
+ source/ti/drivers/.meta/UART2.syscfg.js   | 26 +++++++++++++----------
+ 2 files changed, 30 insertions(+), 22 deletions(-)
+
+diff --git a/source/ti/display/.meta/Display.syscfg.js b/source/ti/display/.meta/Display.syscfg.js
+index 427d50e41..2cc1da887 100644
+--- a/source/ti/display/.meta/Display.syscfg.js
++++ b/source/ti/display/.meta/Display.syscfg.js
+@@ -151,17 +151,21 @@ value that cannot be changed. Please refer to the
+         description : "UART baud rate",
+         default     : 115200,
+         options     : [
+-            { name:   1200 },
+-            { name:   2400 },
+-            { name:   4800 },
+-            { name:   9600 },
+-            { name:  19200 },
+-            { name:  38400 },
+-            { name:  57600 },
+-            { name: 115200 },
+-            { name: 230400 },
+-            { name: 460800 },
+-            { name: 921600 }
++            { name:    1200 },
++            { name:    2400 },
++            { name:    4800 },
++            { name:    9600 },
++            { name:   19200 },
++            { name:   38400 },
++            { name:   57600 },
++            { name:  115200 },
++            { name:  230400 },
++            { name:  460800 },
++            { name:  921600 },
++            { name: 1200000 },
++            { name: 1500000 },
++            { name: 2000000 },
++            { name: 3000000 }
+         ]
+     }
+ ];
+diff --git a/source/ti/drivers/.meta/UART2.syscfg.js b/source/ti/drivers/.meta/UART2.syscfg.js
+index 641a53e64..b359894d6 100644
+--- a/source/ti/drivers/.meta/UART2.syscfg.js
++++ b/source/ti/drivers/.meta/UART2.syscfg.js
+@@ -55,17 +55,21 @@ let config = [
+         hidden      : true,
+         default     : [115200],
+         options     : [
+-            { name:   1200 },
+-            { name:   2400 },
+-            { name:   4800 },
+-            { name:   9600 },
+-            { name:  19200 },
+-            { name:  38400 },
+-            { name:  57600 },
+-            { name: 115200 },
+-            { name: 230400 },
+-            { name: 460800 },
+-            { name: 921600 }
++            { name:    1200 },
++            { name:    2400 },
++            { name:    4800 },
++            { name:    9600 },
++            { name:   19200 },
++            { name:   38400 },
++            { name:   57600 },
++            { name:  115200 },
++            { name:  230400 },
++            { name:  460800 },
++            { name:  921600 },
++            { name: 1200000 },
++            { name: 1500000 },
++            { name: 2000000 },
++            { name: 3000000 }
+         ]
+     },
+     {
+-- 
+2.46.0
+

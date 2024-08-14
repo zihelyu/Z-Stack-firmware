@@ -1,0 +1,35 @@
+From 704b86abf3cec819504acdba4cd581d7c4636d14 Mon Sep 17 00:00:00 2001
+From: Olliver Schinagl <oliver@schinagl.nl>
+Date: Wed, 14 Aug 2024 10:39:42 +0200
+Subject: [PATCH 08/15] sdk: Rediscover on route failure
+
+Received a source route failure, remove route and rediscover.
+
+@koenkk
+
+Signed-off-by: Olliver Schinagl <oliver@schinagl.nl>
+---
+ source/ti/zstack/stack/zdo/zd_app.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/source/ti/zstack/stack/zdo/zd_app.c b/source/ti/zstack/stack/zdo/zd_app.c
+index d67a7798a..9597fd575 100644
+--- a/source/ti/zstack/stack/zdo/zd_app.c
++++ b/source/ti/zstack/stack/zdo/zd_app.c
+@@ -3163,6 +3163,13 @@ void ZDO_NetworkStatusCB( uint16_t nwkDstAddr, uint8_t statusCode, uint16_t dstA
+     // Routing error for dstAddr, this is informational and a Route
+     // Request should happen automatically.
+   }
++
++  if ( (nwkDstAddr == NLME_GetShortAddr())
++        && (statusCode == NWKSTAT_SOURCE_ROUTE_FAILURE) )
++  {
++    RTG_RemoveRtgEntry( dstAddr, 0 );
++    NLME_RouteDiscoveryRequest( dstAddr, 0, 30 );
++  }
+ }
+ 
+ /******************************************************************************
+-- 
+2.46.0
+

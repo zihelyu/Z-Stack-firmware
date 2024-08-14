@@ -1,0 +1,127 @@
+From 3266a118b98256e756ee9301451398db31430b63 Mon Sep 17 00:00:00 2001
+From: Olliver Schinagl <oliver@schinagl.nl>
+Date: Wed, 14 Aug 2024 10:48:53 +0200
+Subject: [PATCH 09/15] sdk: Add new MT Utility commands
+
+Add two new custom commands, MT_UTIL_ASSOC_REMOVE (0x63) and
+MT_UTIL_ASSOC_ADD (0x64) to allow for adding and removing associations
+via the API for zigpy-znp or zigbee2mqtt.
+
+@koenkk
+
+Signed-off-by: Olliver Schinagl <oliver@schinagl.nl>
+---
+ source/ti/zstack/mt/mt.h      |  3 ++
+ source/ti/zstack/mt/mt_util.c | 68 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 71 insertions(+)
+
+diff --git a/source/ti/zstack/mt/mt.h b/source/ti/zstack/mt/mt.h
+index 0435d72c6..884c1f51c 100644
+--- a/source/ti/zstack/mt/mt.h
++++ b/source/ti/zstack/mt/mt.h
+@@ -468,6 +468,9 @@ extern "C"
+ #endif
+ #define MT_UTIL_BIND_ADD_ENTRY               0x4D
+ 
++#define MT_UTIL_ASSOC_REMOVE                 0x63
++#define MT_UTIL_ASSOC_ADD                    0x64
++
+ #define MT_UTIL_ZCL_KEY_EST_INIT_EST         0x80
+ #define MT_UTIL_ZCL_KEY_EST_SIGN             0x81
+ 
+diff --git a/source/ti/zstack/mt/mt_util.c b/source/ti/zstack/mt/mt_util.c
+index 73e2a8deb..866969f86 100644
+--- a/source/ti/zstack/mt/mt_util.c
++++ b/source/ti/zstack/mt/mt_util.c
+@@ -154,6 +154,8 @@ static void MT_UtilAPSME_LinkKeyNvIdGet(uint8_t *pBuf);
+ #endif //MT_SYS_KEY_MANAGEMENT
+ static void MT_UtilAPSME_RequestKeyCmd(uint8_t *pBuf);
+ static void MT_UtilAssocCount(uint8_t *pBuf);
++static void MT_UtilAssocRemove(uint8_t *pBuf);
++static void MT_UtilAssocAdd(uint8_t *pBuf);
+ static void MT_UtilAssocFindDevice(uint8_t *pBuf);
+ static void MT_UtilAssocGetWithAddress(uint8_t *pBuf);
+ static void MT_UtilBindAddEntry(uint8_t *pBuf);
+@@ -298,6 +300,14 @@ uint8_t MT_UtilCommandProcessing(uint8_t *pBuf)
+     MT_UtilBindAddEntry(pBuf);
+     break;
+ 
++  case MT_UTIL_ASSOC_REMOVE:
++    MT_UtilAssocRemove(pBuf);
++    break;
++
++  case MT_UTIL_ASSOC_ADD:
++    MT_UtilAssocAdd(pBuf);
++    break;
++
+   case MT_UTIL_SYNC_REQ:
+     MT_UtilSync();
+     break;
+@@ -1401,6 +1411,64 @@ static void MT_UtilAssocCount(uint8_t *pBuf)
+   MT_BuildAndSendZToolResponse(((uint8_t)MT_RPC_CMD_SRSP | (uint8_t)MT_RPC_SYS_UTIL), cmdId, 2, pBuf);
+ }
+ 
++  uint8_t retValue = 0;
++  MT_BuildAndSendZToolResponse(((uint8_t)MT_RPC_CMD_SRSP | (uint8_t)MT_RPC_SYS_UTIL), cmdId, 1, &retValue);
++}
++
++/***************************************************************************************************
++ * @fn      MT_UtilAssocRemove
++ *
++ * @brief   Proxy the AssocRemove() function.
++ *
++ * @param   pBuf - pointer to the received buffer
++ *
++ * @return  void
++ ***************************************************************************************************/
++static void MT_UtilAssocRemove(uint8_t *pBuf)
++{
++  uint8_t cmdId;
++  uint8_t ieeeAddr[Z_EXTADDR_LEN];
++  uint8_t retValue = 0;
++
++  // parse header
++  cmdId = pBuf[MT_RPC_POS_CMD1];
++  pBuf += MT_RPC_FRAME_HDR_SZ;
++
++  /* IeeAddress */
++  OsalPort_memcpy(ieeeAddr, pBuf, Z_EXTADDR_LEN);
++
++  AssocRemove(ieeeAddr);
++
++  MT_BuildAndSendZToolResponse(((uint8_t)MT_RPC_CMD_SRSP | (uint8_t)MT_RPC_SYS_UTIL), cmdId, 1, &retValue);
++}
++
++/***************************************************************************************************
++ * @fn      MT_UtilAssocAdd
++ *
++ * @brief   Proxy the AssocAdd() function.
++ *
++ * @param   pBuf - pointer to the received buffer
++ *
++ * @return  void
++ ***************************************************************************************************/
++static void MT_UtilAssocAdd(uint8_t *pBuf)
++{
++  uint8_t cmdId;
++  uint8_t retValue = 0;
++
++  // parse header
++  cmdId = pBuf[MT_RPC_POS_CMD1];
++  pBuf += MT_RPC_FRAME_HDR_SZ;
++
++  AssocAddNew(
++    BUILD_UINT16(pBuf[Z_EXTADDR_LEN], pBuf[Z_EXTADDR_LEN + 1]),
++    pBuf,
++    pBuf[Z_EXTADDR_LEN + 2]
++  );
++
++  MT_BuildAndSendZToolResponse(((uint8_t)MT_RPC_CMD_SRSP | (uint8_t)MT_RPC_SYS_UTIL), cmdId, 1, &retValue);
++}
++
+ /***************************************************************************************************
+  * @fn      MT_UtilAssocFindDevice
+  *
+-- 
+2.46.0
+

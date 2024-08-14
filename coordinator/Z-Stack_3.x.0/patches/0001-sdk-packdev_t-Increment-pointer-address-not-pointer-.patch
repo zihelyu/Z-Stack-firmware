@@ -1,0 +1,39 @@
+From 0d1a0413b21ee6544ae838ff18bc456b04191993 Mon Sep 17 00:00:00 2001
+From: Olliver Schinagl <oliver@schinagl.nl>
+Date: Wed, 14 Aug 2024 10:16:46 +0200
+Subject: [PATCH 01/15] sdk: packdev_t: Increment pointer address, not pointer
+ value
+
+If pDev is not NULL, everything in the buffer from linkInfo.InFrmCntr
+onwards was also garbage:
+The *pBuf+=4 is definitely a bug, it increments the value, not the pointer
+address. So linkInfo.InFrmCntr is written to the buffer, then
+linkInfo.InFrmCntr in the buffer is incremented by 4, and then the first
+two bytes (because the pointer was not incremented) are overwritten with
+linkInfo.TxFailure. I replaced it with the correct pBuf +=4.
+
+See https://github.com/Koenkk/zigbee2mqtt/issues/13478#issuecomment-1501085509
+
+@slugzero
+
+Signed-off-by: Olliver Schinagl <oliver@schinagl.nl>
+---
+ source/ti/zstack/mt/mt_util.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/source/ti/zstack/mt/mt_util.c b/source/ti/zstack/mt/mt_util.c
+index 54cecc0d6..17efb7fc0 100644
+--- a/source/ti/zstack/mt/mt_util.c
++++ b/source/ti/zstack/mt/mt_util.c
+@@ -1546,7 +1546,7 @@ static void packDev_t(uint8_t *pBuf, associated_devices_t *pDev)
+     *pBuf++ = pDev->linkInfo.rxLqi;
+     *pBuf++ = pDev->linkInfo.inKeySeqNum;
+     OsalPort_bufferUint32( pBuf, pDev->linkInfo.inFrmCntr );
+-    *pBuf += 4;
++    pBuf += 4;
+     *pBuf++ = LO_UINT16(pDev->linkInfo.txFailure);
+     *pBuf++ = HI_UINT16(pDev->linkInfo.txFailure);
+   }
+-- 
+2.46.0
+
