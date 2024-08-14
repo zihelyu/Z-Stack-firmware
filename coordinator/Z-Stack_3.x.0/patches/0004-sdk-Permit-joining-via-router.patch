@@ -1,0 +1,33 @@
+From 7529825c69de6385df8add5ce22cc869fcb0c0a2 Mon Sep 17 00:00:00 2001
+From: Olliver Schinagl <oliver@schinagl.nl>
+Date: Wed, 14 Aug 2024 10:27:00 +0200
+Subject: [PATCH 04/14] sdk: Permit joining via router
+
+If joining is enabled via a router, ZDO_ProcessMgmtPermitJoinReq is never
+triggered thus ZDSecMgrPermitJoining is never called. Joining via a router
+would always fail now since ZDSecMgrPermitJoiningEnabled in zd_sec_mgr.c
+stays FALSE.
+
+@koenkk
+
+Signed-off-by: Olliver Schinagl <oliver@schinagl.nl>
+---
+ source/ti/zstack/mt/mt_zdo.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/source/ti/zstack/mt/mt_zdo.c b/source/ti/zstack/mt/mt_zdo.c
+index 7ee216eee..63c723e64 100644
+--- a/source/ti/zstack/mt/mt_zdo.c
++++ b/source/ti/zstack/mt/mt_zdo.c
+@@ -1685,6 +1685,8 @@ static void MT_ZdoMgmtPermitJoinRequest(uint8_t *pBuf)
+   retValue = (uint8_t)ZDP_MgmtPermitJoinReq( &destAddr, duration, tcSignificance, 0);
+   ignoreIndication = FALSE;
+ 
++  ZDSecMgrPermitJoining(duration);
++
+   MT_BuildAndSendZToolResponse(((uint8_t)MT_RPC_CMD_SRSP | (uint8_t)MT_RPC_SYS_ZDO), cmdId, 1, &retValue);
+ }
+ 
+-- 
+2.46.0
+

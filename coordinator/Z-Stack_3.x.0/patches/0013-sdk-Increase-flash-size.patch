@@ -1,0 +1,51 @@
+From fdba7ac0a55ee1ab28e8cf6c8693cbf61b2ec4f1 Mon Sep 17 00:00:00 2001
+From: Olliver Schinagl <oliver@schinagl.nl>
+Date: Wed, 14 Aug 2024 11:23:05 +0200
+Subject: [PATCH 13/14] sdk: Increase flash size
+
+To be able to fit larger firmware images, we have a little headroom on
+our flash size. Lets increase it to make the maximum space available.
+
+Note that this may/will require sysconf updates downstream.
+
+Signed-off-by: Olliver Schinagl <oliver@schinagl.nl>
+---
+ .../boards/cc13x2_cc26x2/cc13x2_cc26x2_tirtos7_ticlang.cmd  | 4 +---
+ .../cc13x2x7_cc26x2x7/cc13x2x7_cc26x2x7_tirtos7_ticlang.cmd | 6 +++---
+ 2 files changed, 4 insertions(+), 6 deletions(-)
+
+diff --git a/source/ti/zstack/boards/cc13x2_cc26x2/cc13x2_cc26x2_tirtos7_ticlang.cmd b/source/ti/zstack/boards/cc13x2_cc26x2/cc13x2_cc26x2_tirtos7_ticlang.cmd
+index 716e79e44..812625339 100755
+--- a/source/ti/zstack/boards/cc13x2_cc26x2/cc13x2_cc26x2_tirtos7_ticlang.cmd
++++ b/source/ti/zstack/boards/cc13x2_cc26x2/cc13x2_cc26x2_tirtos7_ticlang.cmd
+@@ -66,9 +66,7 @@
+ /* The starting address of the application.  Normally the interrupt vectors  */
+ /* must be located at the beginning of the application.                      */
+ 
+-#ifndef NVOCMP_NVPAGES
+-#define NVOCMP_NVPAGES          2
+-#endif
++#define NVOCMP_NVPAGES          3
+ 
+ #define FLASH_BASE              0x00000000
+ #define FLASH_SIZE              (0x56000 - (NVOCMP_NVPAGES * 0x2000))
+diff --git a/source/ti/zstack/boards/cc13x2x7_cc26x2x7/cc13x2x7_cc26x2x7_tirtos7_ticlang.cmd b/source/ti/zstack/boards/cc13x2x7_cc26x2x7/cc13x2x7_cc26x2x7_tirtos7_ticlang.cmd
+index 0c1124a86..fdebcef36 100755
+--- a/source/ti/zstack/boards/cc13x2x7_cc26x2x7/cc13x2x7_cc26x2x7_tirtos7_ticlang.cmd
++++ b/source/ti/zstack/boards/cc13x2x7_cc26x2x7/cc13x2x7_cc26x2x7_tirtos7_ticlang.cmd
+@@ -67,9 +67,9 @@
+ /* must be located at the beginning of the application.                      */
+ 
+ #define FLASH_BASE              0x00000000
+-#define FLASH_SIZE              0xAA000
+-#define FLASH_NV_BASE           0xAA000
+-#define FLASH_NV_SIZE           0x4000
++#define FLASH_SIZE              0xA6000
++#define FLASH_NV_BASE           0xA6000
++#define FLASH_NV_SIZE           0x8000
+ #define FLASH_LAST_BASE         0xAE000
+ #define FLASH_LAST_SIZE         0x2000
+ 
+-- 
+2.46.0
+

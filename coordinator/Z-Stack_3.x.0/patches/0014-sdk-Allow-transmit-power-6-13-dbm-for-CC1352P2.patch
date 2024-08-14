@@ -1,0 +1,69 @@
+From 7fe32d42619e8503b4271e2393548f9ad4a25e40 Mon Sep 17 00:00:00 2001
+From: Olliver Schinagl <oliver@schinagl.nl>
+Date: Fri, 16 Aug 2024 10:16:17 +0200
+Subject: [PATCH 14/14] sdk: Allow transmit power 6 - 13 dbm for CC1352P2
+
+Lets extend the range of the CC1352P2 so also include 6 - 13 dBm  signal
+strengths.
+
+@koenkk
+
+Signed-off-by: Olliver Schinagl <oliver@schinagl.nl>
+---
+ .../cc13x2_cc26x2_r3/pasettings.json          | 40 +++++++++++++++++++
+ 1 file changed, 40 insertions(+)
+
+diff --git a/source/ti/devices/radioconfig/.meta/config/pa_tables/cc13x2_cc26x2_r3/pasettings.json b/source/ti/devices/radioconfig/.meta/config/pa_tables/cc13x2_cc26x2_r3/pasettings.json
+index 2babcfe0f..b4ed56b24 100644
+--- a/source/ti/devices/radioconfig/.meta/config/pa_tables/cc13x2_cc26x2_r3/pasettings.json
++++ b/source/ti/devices/radioconfig/.meta/config/pa_tables/cc13x2_cc26x2_r3/pasettings.json
+@@ -2133,6 +2133,46 @@
+                                 "_text": "14",
+                                 "Value": "0xFFFF",
+                                 "TxHighPa": "0x1B27D6"
++                            },
++                            {
++                                "_text": "13",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x3FC3CD"
++                            },
++                            {
++                                "_text": "12",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x3F27CC"
++                            },
++                            {
++                                "_text": "11",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x3021CB"
++                            },
++                            {
++                                "_text": "10",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x104F66"
++                            },
++                            {
++                                "_text": "9",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x103F5F"
++                            },
++                            {
++                                "_text": "8",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x10335A"
++                            },
++                            {
++                                "_text": "7",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x14285F"
++                            },
++                            {
++                                "_text": "6",
++                                "Value": "0xFFFF",
++                                "TxHighPa": "0x144F2A"
+                             }
+                         ]
+                     }
+-- 
+2.46.0
+

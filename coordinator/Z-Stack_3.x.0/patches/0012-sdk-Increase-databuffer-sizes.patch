@@ -1,0 +1,67 @@
+From e7905c02fb2d0e428c28ff173a9db694fc305dd3 Mon Sep 17 00:00:00 2001
+From: Olliver Schinagl <oliver@schinagl.nl>
+Date: Wed, 14 Aug 2024 11:21:09 +0200
+Subject: [PATCH 12/14] sdk: Increase databuffer sizes
+
+Increase data buffer sizes so we can increase our performance/network
+size.
+
+Note, that for some platforms this requires to increase the stack size.
+
+@koenkk
+
+Signed-off-by: Olliver Schinagl <oliver@schinagl.nl>
+---
+ .../cc13x2_cc26x2/cc13x2_cc26x2_tirtos7_ticlang.cmd       | 2 +-
+ .../cc13x2x7_cc26x2x7_tirtos7_ticlang.cmd                 | 2 +-
+ source/ti/zstack/stack/nwk/nwk_globals.c                  | 8 ++++----
+ 3 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/source/ti/zstack/boards/cc13x2_cc26x2/cc13x2_cc26x2_tirtos7_ticlang.cmd b/source/ti/zstack/boards/cc13x2_cc26x2/cc13x2_cc26x2_tirtos7_ticlang.cmd
+index 3095fba2c..716e79e44 100755
+--- a/source/ti/zstack/boards/cc13x2_cc26x2/cc13x2_cc26x2_tirtos7_ticlang.cmd
++++ b/source/ti/zstack/boards/cc13x2_cc26x2/cc13x2_cc26x2_tirtos7_ticlang.cmd
+@@ -60,7 +60,7 @@
+ /* modifications in your CCS project and leave this file alone.              */
+ /*                                                                           */
+ /* --heap_size=0                                                             */
+---stack_size=1024
++--stack_size=8192
+ /* --library=rtsv7M3_T_le_eabi.lib                                           */
+ 
+ /* The starting address of the application.  Normally the interrupt vectors  */
+diff --git a/source/ti/zstack/boards/cc13x2x7_cc26x2x7/cc13x2x7_cc26x2x7_tirtos7_ticlang.cmd b/source/ti/zstack/boards/cc13x2x7_cc26x2x7/cc13x2x7_cc26x2x7_tirtos7_ticlang.cmd
+index bbe82ebcb..0c1124a86 100755
+--- a/source/ti/zstack/boards/cc13x2x7_cc26x2x7/cc13x2x7_cc26x2x7_tirtos7_ticlang.cmd
++++ b/source/ti/zstack/boards/cc13x2x7_cc26x2x7/cc13x2x7_cc26x2x7_tirtos7_ticlang.cmd
+@@ -60,7 +60,7 @@
+ /* modifications in your CCS project and leave this file alone.              */
+ /*                                                                           */
+ /* --heap_size=0                                                             */
+---stack_size=1024
++--stack_size=8192
+ /* --library=rtsv7M3_T_le_eabi.lib                                           */
+ 
+ /* The starting address of the application.  Normally the interrupt vectors  */
+diff --git a/source/ti/zstack/stack/nwk/nwk_globals.c b/source/ti/zstack/stack/nwk/nwk_globals.c
+index a0acd954d..4953a483b 100644
+--- a/source/ti/zstack/stack/nwk/nwk_globals.c
++++ b/source/ti/zstack/stack/nwk/nwk_globals.c
+@@ -91,10 +91,10 @@
+  * CONSTANTS
+  */
+ // Maximums for the data buffer queue
+-#define NWK_MAX_DATABUFS_WAITING    8     // Waiting to be sent to MAC
+-#define NWK_MAX_DATABUFS_SCHEDULED  5     // Timed messages to be sent
+-#define NWK_MAX_DATABUFS_CONFIRMED  5     // Held after MAC confirms
+-#define NWK_MAX_DATABUFS_TOTAL      12    // Total number of buffers
++#define NWK_MAX_DATABUFS_WAITING    48     // Waiting to be sent to MAC
++#define NWK_MAX_DATABUFS_SCHEDULED  30     // Timed messages to be sent
++#define NWK_MAX_DATABUFS_CONFIRMED  30     // Held after MAC confirms
++#define NWK_MAX_DATABUFS_TOTAL      72    // Total number of buffers
+ 
+ // 1-255 (0 -> 256) X RTG_TIMER_INTERVAL
+ // A known shortcoming is that when a message is enqueued as "hold" for a
+-- 
+2.46.0
+

@@ -1,0 +1,103 @@
+From 1eb105c23f021f6464cead7e606ce114bc6108eb Mon Sep 17 00:00:00 2001
+From: Olliver Schinagl <oliver@schinagl.nl>
+Date: Wed, 14 Aug 2024 11:15:15 +0200
+Subject: [PATCH 11/14] sdk: LED Toggle uppon permit join/timeout
+
+When a network is joined, we toggle the led ON or OFF, depending on the
+previous state. This makes it visual whether the Zigbee radio allows
+joins or not.
+
+Signed-off-by: Olliver Schinagl <oliver@schinagl.nl>
+---
+ source/ti/zstack/stack/zdo/zd_sec_mgr.c | 23 +++++++++++++++++++++++
+ source/ti/zstack/stack/zdo/zd_sec_mgr.h |  5 +++++
+ 2 files changed, 28 insertions(+)
+
+diff --git a/source/ti/zstack/stack/zdo/zd_sec_mgr.c b/source/ti/zstack/stack/zdo/zd_sec_mgr.c
+index d7ca14f0c..1404f4e83 100644
+--- a/source/ti/zstack/stack/zdo/zd_sec_mgr.c
++++ b/source/ti/zstack/stack/zdo/zd_sec_mgr.c
+@@ -88,6 +88,7 @@ extern "C"
+ 
+ #include <ti/drivers/TRNG.h>
+ #include <ti/drivers/cryptoutils/cryptokey/CryptoKeyPlaintext.h>
++#include "ti_drivers_config.h"
+ 
+ /******************************************************************************
+  * CONSTANTS
+@@ -145,6 +146,8 @@ typedef struct
+  */
+ extern CONST uint8_t gMAX_NWK_SEC_MATERIAL_TABLE_ENTRIES;
+ extern pfnZdoCb zdoCBFunc[MAX_ZDO_CB_FUNC];
++bool gLedsDisabled = FALSE;
++LED_Handle gLedHandle;
+ 
+ /******************************************************************************
+  * EXTERNAL FUNCTIONS
+@@ -1545,6 +1548,23 @@ void ZDSecMgrConfig( void )
+   }
+ }
+ 
++void updateLED( void )
++{
++    if (gLedHandle == NULL) {
++      LED_Params ledParams;
++      LED_Params_init(&ledParams);
++      gLedHandle = LED_open(CONFIG_LED_GREEN, &ledParams);
++    }
++
++    if (gLedsDisabled == FALSE && gLedHandle != NULL) {
++        if (ZDSecMgrPermitJoiningEnabled == TRUE) {
++            LED_setOn(gLedHandle, LED_BRIGHTNESS_MAX);
++        } else {
++            LED_setOff(gLedHandle);
++        }
++    }
++}
++
+ /******************************************************************************
+  * @fn          ZDSecMgrPermitJoining
+  *
+@@ -1573,6 +1593,7 @@ uint8_t ZDSecMgrPermitJoining( uint8_t duration )
+     ZDSecMgrPermitJoiningEnabled = FALSE;
+   }
+ 
++  updateLED();
+   accept = TRUE;
+ 
+   return accept;
+@@ -1594,6 +1615,8 @@ void ZDSecMgrPermitJoiningTimeout( void )
+     ZDSecMgrPermitJoiningEnabled = FALSE;
+     ZDSecMgrPermitJoiningTimed   = FALSE;
+   }
++
++  updateLED();
+ }
+ 
+ /******************************************************************************
+diff --git a/source/ti/zstack/stack/zdo/zd_sec_mgr.h b/source/ti/zstack/stack/zdo/zd_sec_mgr.h
+index 9db9d841f..5f7c1196f 100644
+--- a/source/ti/zstack/stack/zdo/zd_sec_mgr.h
++++ b/source/ti/zstack/stack/zdo/zd_sec_mgr.h
+@@ -77,6 +77,8 @@ extern "C"
+ #include "zcomdef.h"
+ #include "zd_app.h"
+ 
++#include <ti/drivers/apps/LED.h>
++
+ /******************************************************************************
+  * TYPEDEFS
+  */
+@@ -121,6 +123,9 @@ extern CONST uint16_t gZDSECMGR_TC_DEVICE_MAX;
+ extern CONST uint16_t gZDSECMGR_TC_DEVICE_IC_MAX;
+ extern uint8_t  gZDSECMGR_TC_ATTEMPT_DEFAULT_KEY;
+ 
++extern bool gLedsDisabled;
++extern LED_Handle gLedHandle;
++
+ typedef struct
+ {
+ uint32_t              FrameCounter;
+-- 
+2.46.0
+

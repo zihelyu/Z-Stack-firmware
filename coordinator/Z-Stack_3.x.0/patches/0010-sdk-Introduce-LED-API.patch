@@ -1,0 +1,108 @@
+From 0cf5f0a4d0c0d819d9bc3e97e987aa77c02fe996 Mon Sep 17 00:00:00 2001
+From: Olliver Schinagl <oliver@schinagl.nl>
+Date: Wed, 14 Aug 2024 11:07:29 +0200
+Subject: [PATCH 10/14] sdk: Introduce LED API
+
+Allow the LED to be turned on/off via the API with a new command,
+MT_UTIL_LED_CONTROL (0x0A).
+
+The led is setup as 'CONFIG_LED_GREEN' on many boards and typically is
+controlled by IO7. Some boards may not populate these components or not
+even route them, but this is not an issue, as this is made available (or
+not) via the board/sysconfig.
+
+@koenkk
+
+Signed-off-by: Olliver Schinagl <oliver@schinagl.nl>
+---
+ source/ti/zstack/mt/mt.h      |  2 ++
+ source/ti/zstack/mt/mt_util.c | 39 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 41 insertions(+)
+
+diff --git a/source/ti/zstack/mt/mt.h b/source/ti/zstack/mt/mt.h
+index 024730bb3..725c0897c 100644
+--- a/source/ti/zstack/mt/mt.h
++++ b/source/ti/zstack/mt/mt.h
+@@ -441,6 +441,8 @@ extern "C"
+ #define MT_UTIL_CALLBACK_SUB_CMD             0x06
+ #define MT_UTIL_TIME_ALIVE                   0x09
+ 
++#define MT_UTIL_LED_CONTROL                  0x0A
++
+ #define MT_UTIL_TEST_LOOPBACK                0x10
+ #define MT_UTIL_DATA_REQ                     0x11
+ 
+diff --git a/source/ti/zstack/mt/mt_util.c b/source/ti/zstack/mt/mt_util.c
+index 2b4bd5003..e71e924ba 100644
+--- a/source/ti/zstack/mt/mt_util.c
++++ b/source/ti/zstack/mt/mt_util.c
+@@ -79,6 +79,9 @@
+ #include "mt_zdo.h"
+ #include "ssp.h"
+ 
++#include <ti/drivers/apps/LED.h>
++#include "ti_drivers_config.h"
++
+ #if !defined NONWK
+ 
+ #include "mt_nwk.h"
+@@ -154,6 +157,7 @@ static void MT_UtilAPSME_LinkKeyNvIdGet(uint8_t *pBuf);
+ #endif //MT_SYS_KEY_MANAGEMENT
+ static void MT_UtilAPSME_RequestKeyCmd(uint8_t *pBuf);
+ static void MT_UtilAssocCount(uint8_t *pBuf);
++static void MT_UtilLedControl(uint8_t *pBuf);
+ static void MT_UtilAssocRemove(uint8_t *pBuf);
+ static void MT_UtilAssocAdd(uint8_t *pBuf);
+ static void MT_UtilAssocFindDevice(uint8_t *pBuf);
+@@ -288,6 +292,10 @@ uint8_t MT_UtilCommandProcessing(uint8_t *pBuf)
+     MT_UtilAssocCount(pBuf);
+     break;
+ 
++  case MT_UTIL_LED_CONTROL:
++    MT_UtilLedControl(pBuf);
++    break;
++
+   case MT_UTIL_ASSOC_FIND_DEVICE:
+     MT_UtilAssocFindDevice(pBuf);
+     break;
+@@ -1411,6 +1419,37 @@ static void MT_UtilAssocCount(uint8_t *pBuf)
+   MT_BuildAndSendZToolResponse(((uint8_t)MT_RPC_CMD_SRSP | (uint8_t)MT_RPC_SYS_UTIL), cmdId, 2, pBuf);
+ }
+ 
++/***************************************************************************************************
++ * @fn      MT_UtilLedControl
++ *
++ * @brief   Proxy the LedControl() function.
++ *
++ * @param   pBuf - pointer to the received buffer
++ *
++ * @return  void
++ ***************************************************************************************************/
++static void MT_UtilLedControl(uint8_t *pBuf)
++{
++  uint8_t cmdId = pBuf[MT_RPC_POS_CMD1];
++  pBuf += MT_RPC_FRAME_HDR_SZ;
++
++  uint8_t mode =  pBuf[1];
++
++  if (gLedHandle == NULL) {
++    LED_Params ledParams;
++    LED_Params_init(&ledParams);
++    gLedHandle = LED_open(CONFIG_LED_GREEN, &ledParams);
++  }
++
++  if (mode==0) {
++    LED_setOff(gLedHandle);
++  } else if (mode == 5) {
++    gLedsDisabled = TRUE;
++    LED_setOff(gLedHandle);
++  } else {
++    LED_setOn(gLedHandle, LED_BRIGHTNESS_MAX);
++  }
++
+   uint8_t retValue = 0;
+   MT_BuildAndSendZToolResponse(((uint8_t)MT_RPC_CMD_SRSP | (uint8_t)MT_RPC_SYS_UTIL), cmdId, 1, &retValue);
+ }
+-- 
+2.46.0
+

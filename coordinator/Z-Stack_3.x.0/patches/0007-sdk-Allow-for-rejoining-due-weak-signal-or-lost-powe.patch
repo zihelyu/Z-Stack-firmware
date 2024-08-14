@@ -1,0 +1,41 @@
+From b0270d2cd5675a3edd5f1042ebd2e66292366334 Mon Sep 17 00:00:00 2001
+From: Olliver Schinagl <oliver@schinagl.nl>
+Date: Wed, 14 Aug 2024 10:33:29 +0200
+Subject: [PATCH 07/14] sdk: Allow for rejoining due weak signal or lost power
+
+There are some end device leave the network when signal weak or coordinator
+lost power, but it could not rejoin the network.
+
+As apparent through the sniffer log, the ZED is attempting an unsecure rejoin
+(unencrypted rejoin request packet).  By default the Z-Stack
+SIMPLELINK-CC13X2-26X2-SDK v3.40 has zgAllowRejoinsWithWellKnownKey set to
+FALSE in zglobals.c, and since Zigbee HA 1.2.2a devices do not update their
+TC Link Key from the global default it is unable to join the network.
+More information is provided in the Z-Stack User's Guide:
+http://dev.ti.com/tirex/content/simplelink_cc13x2_26x2_sdk_3_40_00_02/docs/zigbee/html/zigbee/z-stack-overview.html#trust-center-tc-rejoin
+
+See https://e2e.ti.com/support/wireless-connectivity/zigbee-and-thread/f/158/p/882650/3265311#3265311
+
+@koenkk
+
+Signed-off-by: Olliver Schinagl <oliver@schinagl.nl>
+---
+ source/ti/zstack/stack/sys/zglobals.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/source/ti/zstack/stack/sys/zglobals.c b/source/ti/zstack/stack/sys/zglobals.c
+index 706736b9b..20b67e3cd 100644
+--- a/source/ti/zstack/stack/sys/zglobals.c
++++ b/source/ti/zstack/stack/sys/zglobals.c
+@@ -131,7 +131,7 @@ uint8_t zgSecurePermitJoin = TRUE;
+ // TC Link Key. In this scenario, if this flag is TRUE, the Trust Center will
+ // encrypt the outgoing NWK Key with the default TC Link Key (ZigbeeAlliance09).
+ // If this flag is FALSE (default), the Trust Center will not send the NWK Key at all.
+-uint8_t zgAllowRejoinsWithWellKnownKey = FALSE;
++uint8_t zgAllowRejoinsWithWellKnownKey = TRUE;
+ 
+ //allowInstallCodes
+ uint8_t zgAllowInstallCodes = ZG_IC_SUPPORTED_NOT_REQUIRED;
+-- 
+2.46.0
+

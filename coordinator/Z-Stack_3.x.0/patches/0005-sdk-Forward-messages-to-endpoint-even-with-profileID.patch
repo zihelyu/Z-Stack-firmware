@@ -1,0 +1,30 @@
+From b7b8fee17a924cceeb3f37d2de1ab71edafafe22 Mon Sep 17 00:00:00 2001
+From: Olliver Schinagl <oliver@schinagl.nl>
+Date: Wed, 14 Aug 2024 10:29:47 +0200
+Subject: [PATCH 05/14] sdk: Forward messages to endpoint even with profileID
+ mismatches
+
+@koenkk
+
+Signed-off-by: Olliver Schinagl <oliver@schinagl.nl>
+---
+ source/ti/zstack/stack/af/af.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/source/ti/zstack/stack/af/af.c b/source/ti/zstack/stack/af/af.c
+index 12512a39b..43b56f87a 100644
+--- a/source/ti/zstack/stack/af/af.c
++++ b/source/ti/zstack/stack/af/af.c
+@@ -483,7 +483,8 @@ void afIncomingData( aps_FrameFormat_t *aff, zAddrType_t *SrcAddress, uint16_t S
+     // if the Wildcard ProfileID is received the message should not be sent to ZDO endpoint
+     if ( (aff->ProfileID == epProfileID) ||
+          ((epDesc->endPoint == ZDO_EP) && (aff->ProfileID == ZDO_PROFILE_ID)) ||
+-         ((epDesc->endPoint != ZDO_EP) && ( aff->ProfileID == ZDO_WILDCARD_PROFILE_ID )) )
++         ((epDesc->endPoint != ZDO_EP) && ( aff->ProfileID == ZDO_WILDCARD_PROFILE_ID )) ||
++         ((aff->ProfileID >= 0x100) && (aff->ProfileID <= 0xFC01)) )
+     {
+       // Save original endpoint
+       uint8_t endpoint = aff->DstEndPoint;
+-- 
+2.46.0
+

@@ -1,0 +1,35 @@
+From 155da8f37adfb44874e720ffd52f9437e557b18f Mon Sep 17 00:00:00 2001
+From: Olliver Schinagl <oliver@schinagl.nl>
+Date: Wed, 14 Aug 2024 10:19:32 +0200
+Subject: [PATCH 02/14] sdk: packDev_t: Clear out uninitialized memory garbage
+
+If pDev is NULL (i.e. not found in associated devices list), only the first
+2 bytes of the buffer (shortAddr) were filled (with INVALID_NODE_ADDR).
+All the remaining buffer contained uninitialized memory garbage.
+Hence the memset, to zero out the entire buffer beforehand.
+
+See https://github.com/Koenkk/zigbee2mqtt/issues/13478#issuecomment-1501085509
+
+@slugzero
+
+Signed-off-by: Olliver Schinagl <oliver@schinagl.nl>
+---
+ source/ti/zstack/mt/mt_util.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/source/ti/zstack/mt/mt_util.c b/source/ti/zstack/mt/mt_util.c
+index 3d82b02d8..de29d8f57 100644
+--- a/source/ti/zstack/mt/mt_util.c
++++ b/source/ti/zstack/mt/mt_util.c
+@@ -1525,6 +1525,8 @@ static void MT_UtilBindAddEntry(uint8_t *pBuf)
+  ***************************************************************************************************/
+ static void packDev_t(uint8_t *pBuf, associated_devices_t *pDev)
+ {
++  memset(pBuf, 0, sizeof(associated_devices_t));
++
+   if (NULL == pDev)
+   {
+     uint16_t rtrn = INVALID_NODE_ADDR;
+-- 
+2.46.0
+
