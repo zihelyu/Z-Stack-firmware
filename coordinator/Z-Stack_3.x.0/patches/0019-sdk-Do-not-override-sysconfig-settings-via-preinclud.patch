@@ -1,0 +1,41 @@
+From e2a79fda67463c48d6b7a43cae1de4dac0ada712 Mon Sep 17 00:00:00 2001
+From: Olliver Schinagl <oliver@schinagl.nl>
+Date: Tue, 13 Aug 2024 16:51:58 +0200
+Subject: [PATCH 19/19] sdk: Do not override sysconfig settings via preinclude
+
+We can easily add a new configuration profile, that correctly sets these
+pins to what is expected on these platforms in znp.syscfg.
+
+Signed-off-by: Olliver Schinagl <oliver@schinagl.nl>
+---
+ source/ti/zstack/stack/config/preinclude.h | 17 -----------------
+ 1 file changed, 17 deletions(-)
+
+diff --git a/source/ti/zstack/stack/config/preinclude.h b/source/ti/zstack/stack/config/preinclude.h
+index a50a178c8..83b004f11 100644
+--- a/source/ti/zstack/stack/config/preinclude.h
++++ b/source/ti/zstack/stack/config/preinclude.h
+@@ -140,20 +140,3 @@
+  */
+ #define MAX_RTG_ENTRIES 250
+ #define ROUTE_EXPIRY_TIME 254
+-
+-// Set default transmit power to 9
+-#ifdef CC1352P_2
+-    #define TXPOWER 9
+-
+-    // Different configs, comment for "other" firmware
+-    #define LAUNCHPAD_CONFIG 1
+-    #ifdef LAUNCHPAD_CONFIG
+-        #define CONFIG_RF_24GHZ                         0x0000001c
+-        #define CONFIG_RF_HIGH_PA                       0x0000001d
+-        #define SET_CCFG_MODE_CONF_XOSC_CAPARRAY_DELTA  0xc1
+-    #else
+-        #define CONFIG_RF_24GHZ                         0x0000006
+-        #define CONFIG_RF_HIGH_PA                       0x0000005
+-        #define SET_CCFG_MODE_CONF_XOSC_CAPARRAY_DELTA  0xfa
+-    #endif
+-#endif
+-- 
+2.46.0
+

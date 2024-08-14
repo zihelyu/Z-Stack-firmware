@@ -1,7 +1,7 @@
 From 3f78ea665cbdff2536327f166dab5d7cf47bcabc Mon Sep 17 00:00:00 2001
 From: Olliver Schinagl <oliver@schinagl.nl>
 Date: Wed, 14 Aug 2024 10:16:46 +0200
-Subject: [PATCH 01/17] sdk: packdev_t: Increment pointer address, not pointer
+Subject: [PATCH 01/19] sdk: packdev_t: Increment pointer address, not pointer
  value
 
 If pDev is not NULL, everything in the buffer from linkInfo.InFrmCntr

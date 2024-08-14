@@ -1,7 +1,7 @@
 From 8de1fc964b0ff7f88e42179ec2c30c45642a38da Mon Sep 17 00:00:00 2001
 From: Olliver Schinagl <oliver@schinagl.nl>
 Date: Wed, 14 Aug 2024 08:58:16 +0200
-Subject: [PATCH 16/17] sdk: Disable child aging leave for unsupported devices
+Subject: [PATCH 16/19] sdk: Disable child aging leave for unsupported devices
 
 Some devices do not support child aging, and would be kicked off the
 network because of it. For these devices, disable child leaving.

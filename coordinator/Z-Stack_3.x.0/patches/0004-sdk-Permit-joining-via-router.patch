@@ -1,7 +1,7 @@
 From 7529825c69de6385df8add5ce22cc869fcb0c0a2 Mon Sep 17 00:00:00 2001
 From: Olliver Schinagl <oliver@schinagl.nl>
 Date: Wed, 14 Aug 2024 10:27:00 +0200
-Subject: [PATCH 04/17] sdk: Permit joining via router
+Subject: [PATCH 04/19] sdk: Permit joining via router
 
 If joining is enabled via a router, ZDO_ProcessMgmtPermitJoinReq is never
 triggered thus ZDSecMgrPermitJoining is never called. Joining via a router

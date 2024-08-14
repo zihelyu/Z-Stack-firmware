@@ -1,7 +1,7 @@
 From 1db37e8e46a55ce76bc185326133e3cd2f72f4ab Mon Sep 17 00:00:00 2001
 From: Olliver Schinagl <oliver@schinagl.nl>
 Date: Wed, 14 Aug 2024 09:40:17 +0200
-Subject: [PATCH 17/17] sdk: Fake IEE Address response for Xiaomi devices
+Subject: [PATCH 17/19] sdk: Fake IEE Address response for Xiaomi devices
 
 It appears that Xiaomi devices won't work with coordinators that are not
 of Xiaomi. To counter this, pretend we're a Xiaomi device by faking the

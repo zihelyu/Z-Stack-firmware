@@ -1,7 +1,7 @@
 From b0270d2cd5675a3edd5f1042ebd2e66292366334 Mon Sep 17 00:00:00 2001
 From: Olliver Schinagl <oliver@schinagl.nl>
 Date: Wed, 14 Aug 2024 10:33:29 +0200
-Subject: [PATCH 07/17] sdk: Allow for rejoining due weak signal or lost power
+Subject: [PATCH 07/19] sdk: Allow for rejoining due weak signal or lost power
 
 There are some end device leave the network when signal weak or coordinator
 lost power, but it could not rejoin the network.

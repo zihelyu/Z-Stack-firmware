@@ -1,7 +1,7 @@
 From 59394d4af55f9be7b75e5a4c7328e96680d2ca13 Mon Sep 17 00:00:00 2001
 From: Olliver Schinagl <oliver@schinagl.nl>
 Date: Wed, 7 Aug 2024 16:08:21 +0200
-Subject: [PATCH] examples: Fix/Support Xiaomi/Aquara devices
+Subject: [PATCH 1/2] examples: Fix/Support Xiaomi/Aquara devices
 
 Xiaomi devices do not support aging leaving nor coordinators that are
 not of the Xiaomi brand.
