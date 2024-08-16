@@ -18,12 +18,17 @@ ARG CCS_VERSION="12.3.0"
 ARG CCS_RELEASE="00005"
 ADD "https://dr-download.ti.com/software-development/ide-configuration-compiler-or-debugger/MD-J1VdearkvK/${CCS_VERSION}/CCS${CCS_VERSION}.${CCS_RELEASE}_linux-x64.tar.gz" "/tmp/ccs_install/"
 
+ARG SKIP_PATCHES
+ENV SKIP_PATCHES="${SKIP_PATCHES}"
+
 ENV HOME="/build"
 ENV CCS_VERSION=${CCS_VERSION}.${CCS_RELEASE}
 ENV SLF2_VERSION=${SLF2_VERSION}
 ENV SLF2_COMPONENTS=${SLF2_COMPONENTS}
 ENV SLF2_SDK="${HOME}/simplelink_cc13xx_cc26xx_sdk"
 
+COPY "./coordinator/Z-Stack_3.x.0/znp_*.syscfg" "/src/"
+COPY "./coordinator/Z-Stack_3.x.0/patches" "/src/patches/"
 RUN apt-get update && apt-get install --yes \
         'build-essential' \
         'cmake' \
@@ -62,6 +67,7 @@ RUN apt-get update && apt-get install --yes \
     rm -f -r "${SLF2_SDK}/docs" && \
     rm -f -r "${SLF2_SDK}/examples/nortos" && \
     rm -f -r '/tmp/ccs_install' && \
+    ( test -z "${SKIP_PATCHES:-}" || exit 0 && cd "${SLF2_SDK}" && git apply --exclude='cc13xx_cc26xx_sdk' '/src/patches/0'*'.patch' ) && \
     echo 'Installation complete'
 
 ENV PATH="/opt/ti/ccs/eclipse/:/opt/ti/ccs/utils/sysconfig/:${PATH}"
