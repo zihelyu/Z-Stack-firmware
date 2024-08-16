@@ -6,10 +6,10 @@
 
 ## Compiling
 1. Create a folder called `workspace` in the folder where the SDK is installed. In the SDK installation folder you should see files like `Makefile` and `license_simplelink_cc13xx_cc26xx_sdk_7_10_00_98.txt`.
-1. Copy `patches/*.patch` to the SDK installation folder, open a Git Bash in this folder and apply the patch using `git apply --exclude='cc13xx_cc26xx_sdk' --ignore-space-change 00*.patch`.
+1. Copy `patches/*.patch` to the SDK installation folder, open a Git Bash in this folder and apply the patch using `git apply --exclude='cc13xx_cc26xx_sdk' --ignore-space-change 0*.patch`.
 1. Start Code Composer Studio, it will ask you to select a workspace folder, select the `workspace` folder you created in the previous step.
 1. Go to *File -> Import -> Code Composer Studio -> CCS Projects -> Select* search-directory: `simplelink_cc13xx_cc26xx_sdk_7_10_00_98/examples/rtos`.
-1. Select:
+1. Select the desired project(s), choose based on chip, ignore `LP` or `LAUNCHXL` naming:
     - `znp_CC1352P_2_LAUNCHXL_tirtos7_ticlang`
     - `znp_CC26X2R1_LAUNCHXL_tirtos7_ticlang`
     - `znp_LP_CC1352P7_4_tirtos7_ticlang`
@@ -18,8 +18,7 @@
 1. Press *Finish*.
 1. Close Code Composer Studio and then copy the appropriate `syscfg` file as `znp.syscfg` into the appropriate workspace folder(s).
     - For example copy `znp_CC26X2R1_LAUNCHXL.syscfg` into `workspace/znp_CC26X2R1_LAUNCHXL_tirtos7_ticlang/znp.syscfg`.
-1. Apply the final patch using `git apply --exclude='cc13xx_cc26xx_sdk' --ignore-space-change 0999-firmware.patch`.
-1. Build the 5 projects; right click -> *Build project*.
+1. Build the project(s); right click -> *Build project*.
     - **Important:** by default the **launchpad** variant of the CC1352P2_CC2652P (= `znp_CC1352P_2_LAUNCHXL_tirtos7_ticlang`) is build. To build the **other** variant configure the correct pins in Code Compose Studio, don't forget to save.
 1. Once finished, the firmware can be found under `znp_*_tirtos7_ticlang/default/znp_*_tirtos7_ticlang.hex`
     - `znp_CC1352P_2_LAUNCHXL_tirtos7_ticlang.hex` -> CC1352P-2 and CC2652P based boards
@@ -61,7 +60,19 @@ $ docker run \
 
 > __Note:__ The local directory `./workspace` is volume-mounted into the containers `/build/workspace` directory to be able to keep files from the container, but can be freely removed when done.
 
-Within the container, we now follow the same steps as above. The GUI is still needed and instructions below explain how this can be achieved.
+Within the container, we now follow similar steps as above, however the GUI is not needed.
+
+1. Within the container, import the project into the workspace
+`# eclipse -noSplash -data "${HOME}/workspace" -application 'com.ti.ccstudio.apps.projectImport' -ccs.location "${SLF2_SDK}/examples/rtos/CC1352P_2_LAUNCHXL/zstack/znp/tirtos7/ticlang/znp_CC1352P_2_LAUNCHXL_tirtos7_ticlang.projectspec"`
+
+1. Copy the board configuration file
+`# cp '/src/znp_CC1352P_2_LAUNCHXL.syscfg' "${HOME}/workspace/znp_CC1352P_2_LAUNCHXL_tirtos7_ticlang/znp.syscfg"`
+
+1. Compile!
+`# eclipse -noSplash -data "${HOME}/workspace" -application 'com.ti.ccstudio.apps.projectBuild' -ccs.projects 'znp_CC1352P_2_LAUNCHXL_tirtos7_ticlang'`
+The output can then be found `./workspace/znp_CC1352P_2_LAUNCHXL_tirtos7_ticlang/default/znp_CC1352P_2_LAUNCHXL_tirtos7_ticlang.hex` on the host.
+
+> __Note:__ The path used here depends on the location used in the previous step.
 
 ### Launching eclipse in the container
 To launch eclipse in the container to test/check things out. This does require a X11 compatible host.
