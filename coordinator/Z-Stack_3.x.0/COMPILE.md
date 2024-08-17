@@ -1,11 +1,11 @@
 # Compiling the firmware
 
 ## Setup development environment
-1. Download and install [simplelink_cc13xx_cc26xx_sdk_7_10_00_98](https://www.ti.com/tool/SIMPLELINK-CC13XX-CC26XX-SDK#downloads)
-1. Download and install [Code Composer Studio 12.3.0.00005](http://www.ti.com/tool/CCSTUDIO)
+1. Download and install [simplelink_cc13xx_cc26xx_sdk_7_41_00_17](https://www.ti.com/tool/SIMPLELINK-CC13XX-CC26XX-SDK#downloads)
+1. Download and install [Code Composer Studio 12.8.0.00012](http://www.ti.com/tool/CCSTUDIO)
 
 ## Compiling
-1. Create a folder called `workspace` in the folder where the SDK is installed. In the SDK installation folder you should see files like `Makefile` and `license_simplelink_cc13xx_cc26xx_sdk_7_10_00_98.txt`.
+1. Create a folder called `workspace` in the folder where the SDK is installed. In the SDK installation folder you should see files like `Makefile` and `license_simplelink_cc13xx_cc26xx_sdk_7_41_00_17.txt`.
 1. Start Code Composer Studio, it will ask you to select a workspace folder, select the `workspace` folder you created in the previous step.
 1. Go to *File -> Import -> Code Composer Studio -> CCS Projects -> Select* search-directory: `simplelink_cc13xx_cc26xx_sdk_7_10_00_98/examples/rtos`.
 1. Select:

@@ -7,15 +7,15 @@ ARG TARGET_ARCH="library"
 
 FROM index.docker.io/${TARGET_ARCH}/ubuntu:${UBUNTU_VERSION}
 
-ARG SLF2_COMPONENTS="PF_CC2X"
+ARG SLF2_COMPONENTS="PF_WCONN"
 
 # Remember to supply/update both version fields.
-ARG SLF2_VERSION="7.10.00.98"
-ARG SLF2_VERSION_PATH="7_10_00_98"
+ARG SLF2_VERSION="7.41.00.17"
+ARG SLF2_VERSION_PATH="7_41_00_17"
 ADD "https://dr-download.ti.com/software-development/software-development-kit-sdk/MD-BPlR3djvTV/${SLF2_VERSION}/simplelink_cc13xx_cc26xx_sdk_${SLF2_VERSION_PATH}__linux.zip" "/tmp/ccs_install/"
 
-ARG CCS_VERSION="12.3.0"
-ARG CCS_RELEASE="00005"
+ARG CCS_VERSION="12.8.0"
+ARG CCS_RELEASE="00012"
 ADD "https://dr-download.ti.com/software-development/ide-configuration-compiler-or-debugger/MD-J1VdearkvK/${CCS_VERSION}/CCS${CCS_VERSION}.${CCS_RELEASE}_linux-x64.tar.gz" "/tmp/ccs_install/"
 
 ENV HOME="/build"
@@ -24,8 +24,6 @@ ENV SLF2_VERSION=${SLF2_VERSION}
 ENV SLF2_COMPONENTS=${SLF2_COMPONENTS}
 ENV SLF2_SDK="${HOME}/simplelink_cc13xx_cc26xx_sdk"
 
-COPY "./coordinator/Z-Stack_3.x.0/znp_*.syscfg" "/src/"
-COPY "./coordinator/Z-Stack_3.x.0/patches" "/src/patches/"
 RUN apt-get update && apt-get install --yes \
         'build-essential' \
         'cmake' \

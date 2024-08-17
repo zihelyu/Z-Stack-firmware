@@ -299,7 +299,7 @@ index 6a9b760d..0fa8f7c0 100644
  #include "zcomdef.h"
  #include "mt_version.h"
  
-+#define CODE_REVISION_NUMBER 20230507
++#define CODE_REVISION_NUMBER 20240710
 +
  /******************************************************************************
   * CONSTANTS
