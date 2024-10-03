@@ -531,7 +531,7 @@ index 000000000..0602c98c0
 +
 +// Set default transmit power to 9 for PA devices
 +#if defined(CC1352P_2) || defined(DeviceFamily_CC13X2X7)
-+    #define TXPOWER 9
++    #define TXPOWER 20
 +#endif
 +
 +// CC1352P2 specific
